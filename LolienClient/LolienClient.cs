@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -15,6 +16,8 @@ namespace LolienClient
 {
     public partial class LolienClient : Form
     {
+        public const string HOST = "http://webgori.kr:8080";
+
         public LolienClient()
         {
             InitializeComponent();
@@ -22,6 +25,10 @@ namespace LolienClient
 
         private void LolienClient_Load(object sender, System.EventArgs e)
         {
+            Form lolienClientForm = Application.OpenForms["LolienClient"];
+            string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            lolienClientForm.Text = lolienClientForm.Text + " v" + version.Substring(0, version.Length - 2) + " by 노래하는엘사";
+
             StringBuilder replayDirectoryPathStringBuilder = new StringBuilder();
             string configFilePath = Directory.GetCurrentDirectory() + "\\config.ini";
             GetPrivateProfileString("LolienClient", "ReplayDirectoryPath", "", replayDirectoryPathStringBuilder, Int32.MaxValue, configFilePath);
@@ -95,7 +102,7 @@ namespace LolienClient
 
         private JObject GetLeagues()
         {
-            string uri = "http://localhost:8080/league";
+            string uri = HOST + "/league";
             string responseText = string.Empty;
 
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(uri);
@@ -179,13 +186,11 @@ namespace LolienClient
 
             if (checkedCustomGame)
             {
-                uri = "http://localhost:8080/custom-game/result";
-                //uri = "http://webgori.kr:8000/custom-game/result";
+                uri = HOST + "/custom-game/result";
             }
             else if (checkedLeague)
             {
-                uri = "http://localhost:8080/league/result";
-                //uri = "http://webgori.kr:8000/league/result";
+                uri = HOST + "/league/result";
             }
 
             this.Invoke(new Action(delegate ()
@@ -201,6 +206,8 @@ namespace LolienClient
                     try
                     {
                         string responseJSON = webClient.UploadString(uri, requestJson);
+
+                        MessageBox.Show("대전 결과가 성공적으로 등록되었습니다.", "Lolien Client", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (WebException e)
                     {

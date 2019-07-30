@@ -98,6 +98,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.leagueComboBox);
             this.Controls.Add(this.replayDirectoryButton);
+            this.MaximizeBox = false;
             this.Name = "LolienClient";
             this.Load += new System.EventHandler(this.LolienClient_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
