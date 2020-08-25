@@ -18,3 +18,11 @@ C:\Project\LoLienClient\LeagueReplayParser\obj\Release\LeagueReplayParser.csproj
 C:\Project\LoLienClient\LeagueReplayParser\obj\Release\LeagueReplayParser.csproj.CopyComplete
 C:\Project\LoLienClient\LeagueReplayParser\obj\Release\LeagueReplayParser.dll
 C:\Project\LoLienClient\LeagueReplayParser\obj\Release\LeagueReplayParser.pdb
+D:\Project\LolienClient\LeagueReplayParser\bin\Release\LeagueReplayParser.xml
+D:\Project\LolienClient\LeagueReplayParser\bin\Release\LeagueReplayParser.dll
+D:\Project\LolienClient\LeagueReplayParser\bin\Release\LeagueReplayParser.pdb
+D:\Project\LolienClient\LeagueReplayParser\bin\Release\Newtonsoft.Json.dll
+D:\Project\LolienClient\LeagueReplayParser\bin\Release\Newtonsoft.Json.xml
+D:\Project\LolienClient\LeagueReplayParser\obj\Release\LeagueReplayParser.csprojResolveAssemblyReference.cache
+D:\Project\LolienClient\LeagueReplayParser\obj\Release\LeagueReplayParser.dll
+D:\Project\LolienClient\LeagueReplayParser\obj\Release\LeagueReplayParser.pdb

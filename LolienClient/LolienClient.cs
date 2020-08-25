@@ -102,7 +102,7 @@ namespace LolienClient
 
         private JObject GetLeagues()
         {
-            string uri = HOST + "/league";
+            string uri = HOST + "/v1/leagues";
             string responseText = string.Empty;
 
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(uri);
@@ -186,44 +186,46 @@ namespace LolienClient
 
             if (checkedCustomGame)
             {
-                uri = HOST + "/custom-game/result";
+                uri = HOST + "/v1/custom-game/result";
             }
             else if (checkedLeague)
             {
-                uri = HOST + "/league/result";
+                uri = HOST + "/v1/leagues/result";
             }
 
             this.Invoke(new Action(delegate ()
             {
                 int leagueIdx = Int32.Parse((leagueComboBox.SelectedItem as ComboboxItem).Value.ToString());
+                string requestJson = "{\"matchId\": " + matchId + ", \"entries\": \"" + entries + "\"}";
 
                 if (leagueIdx > 0)
                 {
-                    string requestJson = "{\"leagueIdx\": " + leagueIdx + ", \"matchId\": " + matchId + ", \"entries\": \"" + entries + "\"}";
-                    WebClient webClient = new WebClient();
-                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    webClient.Encoding = UTF8Encoding.UTF8;
-                    try
+                    requestJson = "{\"leagueIdx\": " + leagueIdx + ", \"matchId\": " + matchId + ", \"entries\": \"" + entries + "\"}";
+                }
+
+                WebClient webClient = new WebClient();
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                webClient.Encoding = UTF8Encoding.UTF8;
+                try
+                {
+                    string responseJSON = webClient.UploadString(uri, requestJson);
+
+                    MessageBox.Show("내전 결과가 성공적으로 등록되었습니다.", "Lolien Client", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (WebException e)
+                {
+                    Stream responseStream = e.Response.GetResponseStream();
+                    string responseBodyJsonString = string.Empty;
+
+                    using (StreamReader sr = new StreamReader(responseStream))
                     {
-                        string responseJSON = webClient.UploadString(uri, requestJson);
-
-                        MessageBox.Show("대전 결과가 성공적으로 등록되었습니다.", "Lolien Client", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        responseBodyJsonString = sr.ReadToEnd();
                     }
-                    catch (WebException e)
-                    {
-                        Stream responseStream = e.Response.GetResponseStream();
-                        string responseBodyJsonString = string.Empty;
 
-                        using (StreamReader sr = new StreamReader(responseStream))
-                        {
-                            responseBodyJsonString = sr.ReadToEnd();
-                        }
+                    JObject responseBodyJobject = (JObject) JObject.Parse(responseBodyJsonString);
+                    string message = (string)responseBodyJobject["message"];
 
-                        JObject responseBodyJobject = (JObject)JObject.Parse(responseBodyJsonString);
-                        string message = (string)responseBodyJobject["message"];
-
-                        MessageBox.Show(message, "Lolien Client", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    MessageBox.Show(message, "Lolien Client", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }));
         }
