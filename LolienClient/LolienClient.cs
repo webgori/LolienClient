@@ -16,7 +16,7 @@ namespace LolienClient
 {
     public partial class LolienClient : Form
     {
-        public const string HOST = "https://webgori.kr";
+        public const string HOST = "https://api.lolien.kr";
 
         public LolienClient()
         {
